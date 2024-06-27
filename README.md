@@ -1,9 +1,9 @@
 # Base-Api-Typescript
 
 ## Stack
-Linguagem: Typescript
-ORM: Prisma
-Api framework: Express
+Linguagem: Typescript<br/>
+ORM: Prisma<br/>
+Api framework: Express<br/>
 
 ## Banco de Dadods
 MongoDB
