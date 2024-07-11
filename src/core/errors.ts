@@ -1,9 +1,10 @@
 export class BaseError extends Error {
   constructor(
-    message: string,
-    public error: string,
-    public statusCode: number,
+    public messages: string[],
+    public error: string = "BAD_REQUEST",
+    public statusCode: number = 400,
   ) {
+    const message = messages.length == 1 ? messages[0] : messages.join(", ");
     super(message);
     this.error = error;
     this.statusCode = statusCode;
@@ -11,7 +12,7 @@ export class BaseError extends Error {
 
   public getBody() {
     return {
-      message: this.message,
+      messages: this.messages,
       error: this.error,
       statusCode: this.statusCode,
     };
@@ -19,14 +20,14 @@ export class BaseError extends Error {
 }
 
 export class ResourceNotFoundError extends BaseError {
-  constructor(message: string) {
-    super(message, "BAD_REQUEST", 400);
+  constructor(messages: string[]) {
+    super(messages);
   }
 }
 
 export class InternalServerError extends BaseError {
   constructor(err: Error) {
-    super("Internal Server Error", "INTERNAL_SERVER_ERROR", 500);
+    super(["Internal Server Error"], "INTERNAL_SERVER_ERROR", 500);
 
     console.log({
       message: err.message,

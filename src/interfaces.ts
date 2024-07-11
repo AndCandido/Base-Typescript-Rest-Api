@@ -1,12 +1,25 @@
 import { User } from "@prisma/client";
-import { UserRequestDto } from "./models/user";
+import { UserRequestDto, UserSaveDto } from "./models/user";
+import { LoginData, LoginResponseDto, TokenPayload } from "./models/auth";
+import { Request } from "express";
 
 export interface IUserRepository {
-  findById(id: string, isIncludeUserHealth?: boolean): Promise<User | null>;
-  saveUser(user: UserRequestDto): Promise<User | null>;
+  findByUsername(
+    username: string,
+    isIncludeUserHealth?: boolean,
+  ): Promise<User | null>;
+  saveUser(user: UserSaveDto): Promise<User | null>;
 }
 
-export interface IUserService {
-  getUserByIdWithHealth(userId: string): Promise<User>;
-  saveUser(user: UserRequestDto): Promise<User>;
+export interface IAuthService {
+  login(loginData: LoginData): Promise<LoginResponseDto>;
+  register(user: UserRequestDto): Promise<User>;
+}
+
+export interface ITokenService {
+  generateToken(tokenPayload: TokenPayload): string;
+}
+
+export interface RequestWithLoginData extends Request {
+  loginData?: LoginData;
 }

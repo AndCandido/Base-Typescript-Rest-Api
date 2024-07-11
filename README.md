@@ -5,5 +5,5 @@ Linguagem: Typescript<br/>
 ORM: Prisma<br/>
 Api framework: Express<br/>
 
-## Banco de Dadods
+## Banco de Dados
 MongoDB
