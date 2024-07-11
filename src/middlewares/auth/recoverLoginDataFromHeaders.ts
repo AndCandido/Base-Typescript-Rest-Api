@@ -1,6 +1,7 @@
 import { NextFunction, Response } from "express";
 import { BaseError } from "../../core/errors";
 import { RequestWithLoginData } from "../../interfaces";
+import { messageErrors } from "../../core/messageErrors";
 
 export function recoverLoginDataFromHeaders(
   req: RequestWithLoginData,
@@ -13,7 +14,7 @@ export function recoverLoginDataFromHeaders(
     .split(":");
 
   if (!username || !password) {
-    const error = new BaseError(["username or password is missing"]);
+    const error = new BaseError([messageErrors.REQUEST.CREDENTIALS_MISSING]);
     next(error);
   }
 

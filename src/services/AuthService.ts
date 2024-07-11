@@ -7,6 +7,7 @@ import bcryptjs from "bcryptjs";
 import { inject, injectable } from "inversify";
 import { IocTypes } from "../types";
 import { LoginData, LoginResponseDto } from "../models/auth";
+import { messageErrors } from "../core/messageErrors";
 
 config();
 
@@ -26,7 +27,7 @@ export class AuthService implements IAuthService {
     );
 
     if (!isPasswordCorrect) {
-      throw new BaseError(["incorrect password"]);
+      throw new BaseError([messageErrors.REQUEST.INCORRECT_PASSWORD]);
     }
 
     const tokenPayload = { username: user.name, email: user.email };
@@ -36,7 +37,8 @@ export class AuthService implements IAuthService {
 
   async getUserByUsername(userId: string): Promise<User> {
     const user = await this.userRepository.findByUsername(userId, false);
-    if (!user) throw new ResourceNotFoundError(["user not found"]);
+    if (!user)
+      throw new ResourceNotFoundError([messageErrors.USER.USER_NOT_FOUND]);
     return user;
   }
 
@@ -50,7 +52,8 @@ export class AuthService implements IAuthService {
     };
 
     const user = await this.userRepository.saveUser(userSaveDto);
-    if (!user) throw new ResourceNotFoundError(["error saving user"]);
+    if (!user)
+      throw new ResourceNotFoundError([messageErrors.USER.ERROR_SAVING_USER]);
     return user;
   }
 

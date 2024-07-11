@@ -5,6 +5,7 @@ import { inject, injectable } from "inversify";
 import { IocTypes } from "../types";
 import { IAuthService, RequestWithLoginData } from "../interfaces";
 import { BaseError } from "../core/errors";
+import { messageErrors } from "../core/messageErrors";
 
 @injectable()
 export class AuthController {
@@ -18,7 +19,7 @@ export class AuthController {
     next: NextFunction,
   ) => {
     if (!req.loginData) {
-      const error = new BaseError(["credentials error"]);
+      const error = new BaseError([messageErrors.REQUEST.CREDENTIALS_ERROR]);
       next(error);
     }
 
