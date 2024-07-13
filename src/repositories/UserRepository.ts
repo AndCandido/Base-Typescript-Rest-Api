@@ -8,16 +8,10 @@ const userDAO = prismaClient.user;
 
 @injectable()
 class UserRepository implements IUserRepository {
-  async findByUsername(
-    username: string,
-    isIncludeUserHealth: boolean = false,
-  ): Promise<User | null> {
+  async findByUsername(username: string): Promise<User | null> {
     return await userDAO.findUnique({
       where: {
         username,
-      },
-      include: {
-        userHealth: isIncludeUserHealth,
       },
     });
   }

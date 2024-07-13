@@ -4,10 +4,7 @@ import { LoginData, LoginResponseDto, TokenPayload } from "./models/auth";
 import { Request } from "express";
 
 export interface IUserRepository {
-  findByUsername(
-    username: string,
-    isIncludeUserHealth?: boolean,
-  ): Promise<User | null>;
+  findByUsername(username: string): Promise<User | null>;
   saveUser(user: UserSaveDto): Promise<User | null>;
 }
 

@@ -36,7 +36,7 @@ export class AuthService implements IAuthService {
   }
 
   async getUserByUsername(userId: string): Promise<User> {
-    const user = await this.userRepository.findByUsername(userId, false);
+    const user = await this.userRepository.findByUsername(userId);
     if (!user)
       throw new ResourceNotFoundError([messageErrors.USER.USER_NOT_FOUND]);
     return user;
