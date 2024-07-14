@@ -18,9 +18,14 @@ export default function userRouter() {
     IocTypes.AppAuthorization,
   );
 
-  userRouter.get("/private", appAuthentication.authenticateUser, (req, res) => {
-    res.json("Private Route");
-  });
+  userRouter.get(
+    "/private",
+    validateAuthorizationHeader,
+    appAuthentication.authenticateUserToken,
+    (req, res) => {
+      res.json("Private Route");
+    },
+  );
 
   userRouter.get(
     "/login",
