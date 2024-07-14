@@ -6,6 +6,7 @@ import { iocContainer } from "../inversify.config";
 import { IocTypes } from "../types";
 import validateAuthorizationHeader from "../middlewares/validations/validateAuthorizationHeader";
 import { recoverLoginDataFromHeaders } from "../middlewares/auth/recoverLoginDataFromHeaders";
+import AppAuthorization from "../middlewares/auth/authenticateUser";
 
 export default function userRouter() {
   const userRouter = Router();
@@ -13,6 +14,13 @@ export default function userRouter() {
   const authController = iocContainer.get<AuthController>(
     IocTypes.AuthController,
   );
+  const appAuthentication = iocContainer.get<AppAuthorization>(
+    IocTypes.AppAuthorization,
+  );
+
+  userRouter.get("/private", appAuthentication.authenticateUser, (req, res) => {
+    res.json("Private Route");
+  });
 
   userRouter.get(
     "/login",

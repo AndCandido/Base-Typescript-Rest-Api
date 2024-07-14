@@ -1,6 +1,6 @@
 import { config } from "dotenv";
 import { User } from "@prisma/client";
-import { IUserRepository, IAuthService, ITokenService } from "../interfaces";
+import { IAuthService, ITokenService, IUserService } from "../interfaces";
 import { UserRequestDto, UserSaveDto } from "../models/user";
 import { BaseError, ResourceNotFoundError } from "../core/errors";
 import bcryptjs from "bcryptjs";
@@ -14,12 +14,12 @@ config();
 @injectable()
 export class AuthService implements IAuthService {
   public constructor(
-    @inject(IocTypes.UserRepository) private userRepository: IUserRepository,
     @inject(IocTypes.TokenService) private tokenService: ITokenService,
+    @inject(IocTypes.UserService) private userService: IUserService,
   ) {}
 
   async login(loginData: LoginData): Promise<LoginResponseDto> {
-    const user = await this.getUserByUsername(loginData.username);
+    const user = await this.userService.getUserByUsername(loginData.username);
 
     const isPasswordCorrect = await bcryptjs.compare(
       loginData.password,
@@ -30,16 +30,9 @@ export class AuthService implements IAuthService {
       throw new BaseError([messageErrors.REQUEST.INCORRECT_PASSWORD]);
     }
 
-    const tokenPayload = { username: user.name, email: user.email };
+    const tokenPayload = { username: user.username, email: user.email };
     const token = this.tokenService.generateToken(tokenPayload);
     return { token };
-  }
-
-  async getUserByUsername(userId: string): Promise<User> {
-    const user = await this.userRepository.findByUsername(userId);
-    if (!user)
-      throw new ResourceNotFoundError([messageErrors.USER.USER_NOT_FOUND]);
-    return user;
   }
 
   async register(userReqDto: UserRequestDto): Promise<User> {
@@ -51,7 +44,7 @@ export class AuthService implements IAuthService {
       encryptedPassword,
     };
 
-    const user = await this.userRepository.saveUser(userSaveDto);
+    const user = await this.userService.saveUser(userSaveDto);
     if (!user)
       throw new ResourceNotFoundError([messageErrors.USER.ERROR_SAVING_USER]);
     return user;
