@@ -1,7 +1,21 @@
 import { Router } from "express";
-import authRouter from "./authRouter";
+import { IocTypes } from "../types";
+import { inject, injectable } from "inversify";
+import { IAppRouter } from "../interfaces";
 
-const router = Router();
-router.use("/auth", authRouter());
+@injectable()
+class IndexAppRouter implements IAppRouter {
+  private router = Router();
+  constructor(@inject(IocTypes.AuthRouter) private authRouter: IAppRouter) {}
 
-export default router;
+  public configureRoutes(): void {
+    this.router.use("/auth", this.authRouter.getConfiguredRouter());
+  }
+
+  public getConfiguredRouter(): Router {
+    this.configureRoutes();
+    return this.router;
+  }
+}
+
+export default IndexAppRouter;

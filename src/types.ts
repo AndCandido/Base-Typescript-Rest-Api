@@ -5,4 +5,6 @@ export const IocTypes = {
   AuthController: Symbol.for("AuthController"),
   TokenService: Symbol.for("ITokenService"),
   AppAuthorization: Symbol.for("AppAuthorization"),
+  AuthRouter: Symbol.for("AuthRouter"),
+  IndexAppRouter: Symbol.for("IndexAppRouter"),
 };

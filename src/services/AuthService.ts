@@ -21,10 +21,7 @@ export class AuthService implements IAuthService {
   async login(loginData: LoginData): Promise<LoginResponseDto> {
     const user = await this.userService.getUserByUsername(loginData.username);
 
-    const isPasswordCorrect = await bcryptjs.compare(
-      loginData.password,
-      user.encryptedPassword,
-    );
+    const isPasswordCorrect = await bcryptjs.compare(loginData.password, user.encryptedPassword);
 
     if (!isPasswordCorrect) {
       throw new BaseError([messageErrors.REQUEST.INCORRECT_PASSWORD]);
@@ -45,8 +42,7 @@ export class AuthService implements IAuthService {
     };
 
     const user = await this.userService.saveUser(userSaveDto);
-    if (!user)
-      throw new ResourceNotFoundError([messageErrors.USER.ERROR_SAVING_USER]);
+    if (!user) throw new ResourceNotFoundError([messageErrors.USER.ERROR_SAVING_USER]);
     return user;
   }
 

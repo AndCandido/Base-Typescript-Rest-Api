@@ -29,11 +29,7 @@ export class ResourceNotFoundError extends BaseError {
 
 export class InternalServerError extends BaseError {
   constructor(err: Error) {
-    super(
-      [messageErrors.API.INTERNAL_SERVER_ERROR],
-      "INTERNAL_SERVER_ERROR",
-      500,
-    );
+    super([messageErrors.API.INTERNAL_SERVER_ERROR], "INTERNAL_SERVER_ERROR", 500);
 
     console.log({
       message: err.message,

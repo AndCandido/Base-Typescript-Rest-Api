@@ -1,7 +1,7 @@
 import { User } from "@prisma/client";
 import { UserRequestDto, UserSaveDto } from "./models/user";
 import { LoginData, LoginResponseDto, TokenPayload } from "./models/auth";
-import { Request } from "express";
+import { Request, Router } from "express";
 import { Jwt } from "jsonwebtoken";
 
 export interface IUserRepository {
@@ -26,4 +26,9 @@ export interface IUserService {
 
 export interface RequestWithLoginData extends Request {
   loginData?: LoginData;
+}
+
+export interface IAppRouter {
+  configureRoutes(): void;
+  getConfiguredRouter(): Router;
 }

@@ -9,15 +9,9 @@ import { messageErrors } from "../core/messageErrors";
 
 @injectable()
 export class AuthController {
-  constructor(
-    @inject(IocTypes.AuthService) private authService: IAuthService,
-  ) {}
+  constructor(@inject(IocTypes.AuthService) private authService: IAuthService) {}
 
-  login = async (
-    req: RequestWithLoginData,
-    res: Response,
-    next: NextFunction,
-  ) => {
+  login = async (req: RequestWithLoginData, res: Response, next: NextFunction) => {
     if (!req.loginData) {
       const error = new BaseError([messageErrors.REQUEST.CREDENTIALS_ERROR]);
       next(error);

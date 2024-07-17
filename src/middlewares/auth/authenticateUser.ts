@@ -11,11 +11,7 @@ export default class AppAuthorization {
     @inject(IocTypes.UserService) private userService: IUserService,
   ) {}
 
-  authenticateUserToken = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => {
+  authenticateUserToken = async (req: Request, res: Response, next: NextFunction) => {
     const authorization = req.headers.authorization;
     const token = authorization!.replace("Bearer ", "");
 

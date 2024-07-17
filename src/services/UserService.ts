@@ -8,9 +8,7 @@ import { UserSaveDto } from "../models/user";
 
 @injectable()
 class UserService implements IUserService {
-  constructor(
-    @inject(IocTypes.UserRepository) private userRepository: IUserRepository,
-  ) {}
+  constructor(@inject(IocTypes.UserRepository) private userRepository: IUserRepository) {}
 
   async saveUser(userDto: UserSaveDto): Promise<User | null> {
     return await this.userRepository.saveUser(userDto);
@@ -18,8 +16,7 @@ class UserService implements IUserService {
 
   async getUserByUsername(username: string): Promise<User> {
     const user = await this.userRepository.findByUsername(username);
-    if (!user)
-      throw new ResourceNotFoundError([messageErrors.USER.USER_NOT_FOUND]);
+    if (!user) throw new ResourceNotFoundError([messageErrors.USER.USER_NOT_FOUND]);
     return user;
   }
 }

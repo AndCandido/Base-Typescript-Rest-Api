@@ -2,12 +2,7 @@
 import { NextFunction, Request, Response } from "express";
 import { BaseError, InternalServerError } from "../core/errors";
 
-export function globalErrorsHandler(
-  err: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
+export function globalErrorsHandler(err: Error, req: Request, res: Response, next: NextFunction) {
   const errorNormalized = normalizeError(err);
   const statusCode = errorNormalized.statusCode;
   const body = errorNormalized.getBody();

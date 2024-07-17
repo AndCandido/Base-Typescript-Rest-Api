@@ -9,9 +9,7 @@ export function recoverLoginDataFromHeaders(
   next: NextFunction,
 ) {
   const authEncoded = req.headers.authorization!.replace("Basic ", "");
-  const [username, password] = Buffer.from(authEncoded, "base64")
-    .toString()
-    .split(":");
+  const [username, password] = Buffer.from(authEncoded, "base64").toString().split(":");
 
   if (!username || !password) {
     const error = new BaseError([messageErrors.REQUEST.CREDENTIALS_MISSING]);
